@@ -38,7 +38,7 @@ template RsaVerifyPkcs1v15(CHUNK_SIZE, CHUNK_NUMBER, EXP, HASH_TYPE) {
         
         component bits2num[4];
         for (var i = 0; i < 4; i++){
-            bits2num[3 - i] = Bits2Num(64);
+            bits2num[3 - i] = Bits2NumDL(64);
             for (var j = 0; j < 64; j++){
                 bits2num[3 - i].in[j] <== hashed[i * 64 + 63 - j];
             }
@@ -55,7 +55,7 @@ template RsaVerifyPkcs1v15(CHUNK_SIZE, CHUNK_NUMBER, EXP, HASH_TYPE) {
         pm.out[5] === 938447882527703397;
         
         // remain 24 bit
-        component num2bits_6 = Num2Bits(CHUNK_SIZE);
+        component num2bits_6 = Num2BitsDL(CHUNK_SIZE);
         num2bits_6.in <== pm.out[6];
         var remainsBits[32] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 0, 1, 1, 0, 0, 0, 0];
         for (var i = 0; i < 32; i++) {
@@ -83,7 +83,7 @@ template RsaVerifyPkcs1v15(CHUNK_SIZE, CHUNK_NUMBER, EXP, HASH_TYPE) {
 
         component bits2num[2];
         for (var i = 0; i < 2; i++){
-            bits2num[i] = Bits2Num(64);
+            bits2num[i] = Bits2NumDL(64);
             for (var j = 0; j < 64; j++){
                 bits2num[i].in[j] <== hashed[159 - j - i * 64];
             }
@@ -136,7 +136,7 @@ template RsaVerifyPkcs1v15NonOptimised(CHUNK_SIZE, CHUNK_NUMBER, EXP, HASH_TYPE)
     
     component bits2num[4];
     for (var i = 0; i < 4; i++){
-        bits2num[3 - i] = Bits2Num(64);
+        bits2num[3 - i] = Bits2NumDL(64);
         for (var j = 0; j < 64; j++){
             bits2num[3 - i].in[j] <== hashed[i * 64 + 63 - j];
         }
@@ -153,7 +153,7 @@ template RsaVerifyPkcs1v15NonOptimised(CHUNK_SIZE, CHUNK_NUMBER, EXP, HASH_TYPE)
     pm.out[5] === 938447882527703397;
     
     // remain 24 bit
-    component num2bits_6 = Num2Bits(CHUNK_SIZE);
+    component num2bits_6 = Num2BitsDL(CHUNK_SIZE);
     num2bits_6.in <== pm.out[6];
     var remainsBits[32] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 0, 1, 1, 0, 0, 0, 0];
     for (var i = 0; i < 32; i++) {

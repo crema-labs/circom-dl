@@ -70,7 +70,7 @@ template Sha2_224_256Shedule() {
         modulo[r] = GetLastNBits(32);
         modulo[r].in <== s1Sum[m - 16].out + outWords[m - 7] + s0Sum[m - 16].out + outWords[m - 16] + dummy * dummy;
         modulo[r].out ==> outBits[m];
-        bits2Num[r] = Bits2Num(32);
+        bits2Num[r] = Bits2NumDL(32);
         bits2Num[r].in <== outBits[m];
         bits2Num[r].out ==> outWords[m];
         

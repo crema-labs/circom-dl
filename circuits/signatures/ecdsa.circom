@@ -26,7 +26,7 @@ template verifyECDSABits(CHUNK_SIZE, CHUNK_NUMBER, A, B, P, ALGO){
     
     component bits2Num[CHUNK_NUMBER];
     for (var i = 0; i < CHUNK_NUMBER; i++) {
-        bits2Num[i] = Bits2Num(CHUNK_SIZE);
+        bits2Num[i] = Bits2NumDL(CHUNK_SIZE);
         for (var j = 0; j < CHUNK_SIZE; j++) {
             bits2Num[i].in[CHUNK_SIZE - 1 - j] <== hashed[i * CHUNK_SIZE + j];
         }

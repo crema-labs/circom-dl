@@ -17,7 +17,7 @@ pragma circom 2.1.6;
 
 // Convert number to bit array of len
 // We are checking if out[i] is a bit, so LEN + 1 constraints
-template Num2Bits(LEN){
+template Num2BitsDL(LEN){
     assert(LEN <= 253);
     assert(LEN > 0);
     signal input in;
@@ -39,7 +39,7 @@ template Num2Bits(LEN){
 //------------------------------------------------------------------------------------------------------------------------------------------------------------------
 // Here bit check is not present, use only with bits else error will appear!!!
 // No bit check so only 1 constarint
-template Bits2Num(LEN){
+template Bits2NumDL(LEN){
     assert(LEN <= 253);
     assert(LEN > 0);
     signal input in[LEN];

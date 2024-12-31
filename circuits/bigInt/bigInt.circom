@@ -69,7 +69,7 @@ template BigAdd(CHUNK_SIZE, CHUNK_NUMBER){
     component num2bits[CHUNK_NUMBER];
     
     for (var i = 0; i < CHUNK_NUMBER; i++){
-        num2bits[i] = Num2Bits(CHUNK_SIZE + 2);
+        num2bits[i] = Num2BitsDL(CHUNK_SIZE + 2);
         
         //if >= 2**CHUNK_SIZE, overflow
         if (i == 0){
@@ -174,7 +174,7 @@ template BigMult(CHUNK_SIZE, CHUNK_NUMBER){
             ADDITIONAL_LEN = 2 * CHUNK_NUMBER - 2 - i;
         }
         
-        num2bits[i] = Num2Bits(CHUNK_SIZE * 2 + ADDITIONAL_LEN);
+        num2bits[i] = Num2BitsDL(CHUNK_SIZE * 2 + ADDITIONAL_LEN);
         
         if (i == 0){
             num2bits[i].in <== bigMultNoCarry.out[i];
@@ -182,12 +182,12 @@ template BigMult(CHUNK_SIZE, CHUNK_NUMBER){
             num2bits[i].in <== dummy * dummy + bigMultNoCarry.out[i] + bits2numOverflow[i - 1].out;
         }
         
-        bits2numOverflow[i] = Bits2Num(CHUNK_SIZE + ADDITIONAL_LEN);
+        bits2numOverflow[i] = Bits2NumDL(CHUNK_SIZE + ADDITIONAL_LEN);
         for (var j = 0; j < CHUNK_SIZE + ADDITIONAL_LEN; j++){
             bits2numOverflow[i].in[j] <== num2bits[i].out[CHUNK_SIZE + j];
         }
         
-        bits2numModulus[i] = Bits2Num(CHUNK_SIZE);
+        bits2numModulus[i] = Bits2NumDL(CHUNK_SIZE);
         for (var j = 0; j < CHUNK_SIZE; j++){
             bits2numModulus[i].in[j] <== num2bits[i].out[j];
         }
@@ -221,7 +221,7 @@ template BigMultOptimised(CHUNK_SIZE, CHUNK_NUMBER){
     
     for (var i = 0; i < CHUNK_NUMBER * 2 - 1; i++){
         getLastNBits[i] = GetLastNBits(CHUNK_SIZE);
-        bits2Num[i] = Bits2Num(CHUNK_SIZE);
+        bits2Num[i] = Bits2NumDL(CHUNK_SIZE);
         
         if (i == 0) {
             getLastNBits[i].in <== karatsuba.out[i];
@@ -267,7 +267,7 @@ template BigMod(CHUNK_SIZE, CHUNK_NUMBER){
     multChecks.in2 <== modulus;
     multChecks.dummy <== dummy;
     
-    component greaterThan = BigGreaterThan(CHUNK_SIZE, CHUNK_NUMBER);
+    component greaterThan = BigGreaterThanDL(CHUNK_SIZE, CHUNK_NUMBER);
     
     greaterThan.in[0] <== modulus;
     greaterThan.in[1] <== mod;
@@ -365,7 +365,7 @@ template BigSub(CHUNK_SIZE, CHUNK_NUMBER){
     
     component lessThan[CHUNK_NUMBER];
     for (var i = 0; i < CHUNK_NUMBER; i++){
-        lessThan[i] = LessThan(CHUNK_SIZE + 1);
+        lessThan[i] = LessThanDL(CHUNK_SIZE + 1);
         lessThan[i].in[1] <== 2 ** CHUNK_SIZE;
         
         if (i == 0){
@@ -609,7 +609,7 @@ template BigMultNonEqual(CHUNK_SIZE, CHUNK_NUMBER_GREATER, CHUNK_NUMBER_LESS){
             }
             
             
-            num2bits[i] = Num2Bits(CHUNK_SIZE * 2 + ADDITIONAL_LEN);
+            num2bits[i] = Num2BitsDL(CHUNK_SIZE * 2 + ADDITIONAL_LEN);
             
             if (i == 0){
                 num2bits[i].in <== bigMultNoCarry.out[i];
@@ -617,12 +617,12 @@ template BigMultNonEqual(CHUNK_SIZE, CHUNK_NUMBER_GREATER, CHUNK_NUMBER_LESS){
                 num2bits[i].in <== bigMultNoCarry.out[i] + bits2numOverflow[i - 1].out + dummy * dummy;
             }
             
-            bits2numOverflow[i] = Bits2Num(CHUNK_SIZE + ADDITIONAL_LEN);
+            bits2numOverflow[i] = Bits2NumDL(CHUNK_SIZE + ADDITIONAL_LEN);
             for (var j = 0; j < CHUNK_SIZE + ADDITIONAL_LEN; j++){
                 bits2numOverflow[i].in[j] <== num2bits[i].out[CHUNK_SIZE + j];
             }
             
-            bits2numModulus[i] = Bits2Num(CHUNK_SIZE);
+            bits2numModulus[i] = Bits2NumDL(CHUNK_SIZE);
             for (var j = 0; j < CHUNK_SIZE; j++){
                 bits2numModulus[i].in[j] <== num2bits[i].out[j];
             }
@@ -707,7 +707,7 @@ template BigModNonEqual(CHUNK_SIZE, CHUNK_NUMBER_BASE, CHUNK_NUMBER_MODULUS){
         multChecks.dummy <== dummy;
     }
     
-    component greaterThan = BigGreaterThan(CHUNK_SIZE, CHUNK_NUMBER_MODULUS);
+    component greaterThan = BigGreaterThanDL(CHUNK_SIZE, CHUNK_NUMBER_MODULUS);
     
     greaterThan.in[0] <== modulus;
     greaterThan.in[1] <== mod;
@@ -862,7 +862,7 @@ template PowerModNonOptimised(CHUNK_SIZE, CHUNK_NUMBER, EXP) {
 // those are very "expensive" by constraints operations, try to reduse num of usage if these if u can
 
 // in[0] < in[1]
-template BigLessThan(CHUNK_SIZE, CHUNK_NUMBER){
+template BigLessThanDL(CHUNK_SIZE, CHUNK_NUMBER){
     signal input in[2][CHUNK_NUMBER];
     
     signal output out;
@@ -871,12 +871,12 @@ template BigLessThan(CHUNK_SIZE, CHUNK_NUMBER){
     component isEqual[CHUNK_NUMBER - 1];
     signal result[CHUNK_NUMBER - 1];
     for (var i = 0; i < CHUNK_NUMBER; i++){
-        lessThan[i] = LessThan(CHUNK_SIZE);
+        lessThan[i] = LessThanDL(CHUNK_SIZE);
         lessThan[i].in[0] <== in[0][i];
         lessThan[i].in[1] <== in[1][i];
         
         if (i != 0){
-            isEqual[i - 1] = IsEqual();
+            isEqual[i - 1] = IsEqualDL();
             isEqual[i - 1].in[0] <== in[0][i];
             isEqual[i - 1].in[1] <== in[1][i];
         }
@@ -893,7 +893,7 @@ template BigLessThan(CHUNK_SIZE, CHUNK_NUMBER){
 }
 
 // in[0] <= in[1]
-template BigLessEqThan(CHUNK_SIZE, CHUNK_NUMBER){
+template BigLessEqThanDL(CHUNK_SIZE, CHUNK_NUMBER){
     signal input in[2][CHUNK_NUMBER];
     
     signal output out;
@@ -902,11 +902,11 @@ template BigLessEqThan(CHUNK_SIZE, CHUNK_NUMBER){
     component isEqual[CHUNK_NUMBER];
     signal result[CHUNK_NUMBER];
     for (var i = 0; i < CHUNK_NUMBER; i++){
-        lessThan[i] = LessThan(CHUNK_SIZE);
+        lessThan[i] = LessThanDL(CHUNK_SIZE);
         lessThan[i].in[0] <== in[0][i];
         lessThan[i].in[1] <== in[1][i];
         
-        isEqual[i] = IsEqual();
+        isEqual[i] = IsEqualDL();
         isEqual[i].in[0] <== in[0][i];
         isEqual[i].in[1] <== in[1][i];
     }
@@ -924,23 +924,23 @@ template BigLessEqThan(CHUNK_SIZE, CHUNK_NUMBER){
 }
 
 // in[0] > in[1]
-template BigGreaterThan(CHUNK_SIZE, CHUNK_NUMBER){
+template BigGreaterThanDL(CHUNK_SIZE, CHUNK_NUMBER){
     signal input in[2][CHUNK_NUMBER];
     
     signal output out;
     
-    component lessEqThan = BigLessEqThan(CHUNK_SIZE, CHUNK_NUMBER);
+    component lessEqThan = BigLessEqThanDL(CHUNK_SIZE, CHUNK_NUMBER);
     lessEqThan.in <== in;
     out <== 1 - lessEqThan.out;
 }
 
 // in[0] >= in[1]
-template BigGreaterEqThan(CHUNK_SIZE, CHUNK_NUMBER){
+template BigGreaterEqThanDL(CHUNK_SIZE, CHUNK_NUMBER){
     signal input in[2][CHUNK_NUMBER];
     
     signal output out;
     
-    component lessThan = BigLessThan(CHUNK_SIZE, CHUNK_NUMBER);
+    component lessThan = BigLessThanDL(CHUNK_SIZE, CHUNK_NUMBER);
     lessThan.in <== in;
     out <== 1 - lessThan.out;
 }
@@ -948,7 +948,7 @@ template BigGreaterEqThan(CHUNK_SIZE, CHUNK_NUMBER){
 // force equal by all chunks with same position
 // u also can do it for 3 constrains with some assumptions, check SmartEqual from "./bigIntOverflow"
 // it is possible to save some constraints by log_2(n) operations, not n 
-template BigIsEqual(CHUNK_SIZE, CHUNK_NUMBER) {
+template BigIsEqualDL(CHUNK_SIZE, CHUNK_NUMBER) {
     signal input in[2][CHUNK_NUMBER];
     
     signal output out;
@@ -957,7 +957,7 @@ template BigIsEqual(CHUNK_SIZE, CHUNK_NUMBER) {
     signal equalResults[CHUNK_NUMBER];
     
     for (var i = 0; i < CHUNK_NUMBER; i++){
-        isEqual[i] = IsEqual();
+        isEqual[i] = IsEqualDL();
         isEqual[i].in[0] <== in[0][i];
         isEqual[i].in[1] <== in[1][i];
         if (i == 0){

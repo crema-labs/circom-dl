@@ -2,4 +2,4 @@ pragma circom  2.1.6;
 
 include "../../../circuits/bitify/comparators.circom";
 
-component main = LessThan(10);
+component main = LessThanDL(10);

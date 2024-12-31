@@ -28,8 +28,8 @@ template DivisionStrict(){
     div <-- in[0] \ in[1];
     
     div * in[1] + mod === in[0];
-    component check1 = LessEqThan(252);
-    component check2 = GreaterThan(252);
+    component check1 = LessEqThanDL(252);
+    component check2 = GreaterThanDL(252);
     
     check1.in[0] <== div * in[1];
     check1.in[1] <== in[0];
@@ -56,8 +56,8 @@ template Division(LEN){
     div <-- in[0] \ in[1];
     
     div * in[1] + mod === in[0];
-    component check1 = LessEqThan(LEN);
-    component check2 = GreaterThan(LEN);
+    component check1 = LessEqThanDL(LEN);
+    component check2 = GreaterThanDL(LEN);
     
     check1.in[0] <== div * in[1];
     check1.in[1] <== in[0];
@@ -77,7 +77,7 @@ template Log2CeilStrict(){
     signal output out;
     
     signal bits[252];
-    component n2b = Num2Bits(252);
+    component n2b = Num2BitsDL(252);
     n2b.in <== in - 1;
     n2b.out ==> bits;
     
@@ -103,7 +103,7 @@ template Log2Ceil(RANGE){
     signal output out;
     
     signal bits[RANGE];
-    component n2b = Num2Bits(RANGE);
+    component n2b = Num2BitsDL(RANGE);
     n2b.in <== in - 1;
     n2b.out ==> bits;
     

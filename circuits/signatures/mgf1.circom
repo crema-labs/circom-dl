@@ -22,7 +22,7 @@ template Mgf1Sha384(SEED_LEN, MASK_LEN) { //in bytes
     for (var i = 0; i < ITERATIONS; i++) {
         sha384[i] = ShaHashChunks(1 , 384); //32 bits for counter
         sha384[i].dummy <== dummy;
-        num2Bits[i] = Num2Bits(32);
+        num2Bits[i] = Num2BitsDL(32);
     }
 
     var concated[1024]; //seed + 32 bits(4 Bytes) for counter
@@ -88,7 +88,7 @@ template Mgf1Sha256(SEED_LEN, MASK_LEN) { //in bytes
     for (var i = 0; i < ITERATIONS; i++) {
         sha256[i] = ShaHashChunks(1, 256); //32 bits for counter
         sha256[i].dummy <== dummy;
-        num2Bits[i] = Num2Bits(32);
+        num2Bits[i] = Num2BitsDL(32);
     }
 
     var concated[512]; //seed + 32 bits(4 Bytes) for counter

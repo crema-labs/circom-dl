@@ -70,7 +70,7 @@ template Sha2_384_512Schedule() {
         modulo[r] = GetLastNBits(64);
         modulo[r].in <== s1Sum[r].out + outWords[m - 7] + s0Sum[r].out + outWords[m - 16];
         modulo[r].out ==> outBits[m];
-        bits2Num[r] = Bits2Num(64);
+        bits2Num[r] = Bits2NumDL(64);
         bits2Num[r].in <== outBits[m];
         bits2Num[r].out ==> outWords[m];
     }

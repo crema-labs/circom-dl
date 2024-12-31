@@ -295,13 +295,13 @@ template RemoveOverflow(CHUNK_SIZE, CHUNK_NUMBER_OLD, CHUNK_NUMBER_NEW){
             if (i == 0){
                 getLastNBits[i] = GetLastNBits(CHUNK_SIZE);
                 getLastNBits[i].in <== in[i];
-                bits2Num[i] = Bits2Num(CHUNK_SIZE);
+                bits2Num[i] = Bits2NumDL(CHUNK_SIZE);
                 bits2Num[i].in <== getLastNBits[i].out;
                 out[i] <== bits2Num[i].out;
             } else {
                 getLastNBits[i] = GetLastNBits(CHUNK_SIZE);
                 getLastNBits[i].in <== in[i] + getLastNBits[i - 1].div + dummy * dummy;
-                bits2Num[i] = Bits2Num(CHUNK_SIZE);
+                bits2Num[i] = Bits2NumDL(CHUNK_SIZE);
                 bits2Num[i].in <== getLastNBits[i].out;
                 out[i] <== bits2Num[i].out;
             }
@@ -309,7 +309,7 @@ template RemoveOverflow(CHUNK_SIZE, CHUNK_NUMBER_OLD, CHUNK_NUMBER_NEW){
         for (var i = CHUNK_NUMBER_OLD; i < CHUNK_NUMBER_NEW - 1; i++){
             getLastNBits[i] = GetLastNBits(CHUNK_SIZE);
             getLastNBits[i].in <== getLastNBits[i - 1].div;
-            bits2Num[i] = Bits2Num(CHUNK_SIZE);
+            bits2Num[i] = Bits2NumDL(CHUNK_SIZE);
             bits2Num[i].in <== getLastNBits[i].out;
             out[i] <== bits2Num[i].out;
         }
@@ -319,13 +319,13 @@ template RemoveOverflow(CHUNK_SIZE, CHUNK_NUMBER_OLD, CHUNK_NUMBER_NEW){
             if (i == 0){
                 getLastNBits[i] = GetLastNBits(CHUNK_SIZE);
                 getLastNBits[i].in <== in[i];
-                bits2Num[i] = Bits2Num(CHUNK_SIZE);
+                bits2Num[i] = Bits2NumDL(CHUNK_SIZE);
                 bits2Num[i].in <== getLastNBits[i].out;
                 out[i] <== bits2Num[i].out;
             } else {
                 getLastNBits[i] = GetLastNBits(CHUNK_SIZE);
                 getLastNBits[i].in <== in[i] + getLastNBits[i - 1].div + dummy * dummy;
-                bits2Num[i] = Bits2Num(CHUNK_SIZE);
+                bits2Num[i] = Bits2NumDL(CHUNK_SIZE);
                 bits2Num[i].in <== getLastNBits[i].out;
                 out[i] <== bits2Num[i].out;
             }
@@ -374,7 +374,7 @@ template ForceEqual(CHUNK_NUMBER){
     signal equalResults[CHUNK_NUMBER];
     
     for (var i = 0; i < CHUNK_NUMBER; i++){
-        isEqual[i] = IsEqual();
+        isEqual[i] = IsEqualDL();
         isEqual[i].in[0] <== in[0][i];
         isEqual[i].in[1] <== in[1][i];
         if (i == 0){
@@ -417,7 +417,7 @@ template SmartEqual(CHUNK_SIZE, CHUNK_NUMBER){
 	signal output out;
 	signal input dummy;	
 	dummy * dummy === 0;	
-	component isEqual = IsEqual();
+	component isEqual = IsEqualDL();
 	component sumLeft = GetSumOfNElements(CHUNK_NUMBER);
 	sumLeft.dummy <== dummy;
 	component sumRight = GetSumOfNElements(CHUNK_NUMBER);

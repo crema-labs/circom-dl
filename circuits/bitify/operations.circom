@@ -18,11 +18,11 @@ template BinSum(NUM, LEN){
     component sumN = GetSumOfNElements(NUM);
     sumN.dummy <== dummy;
     for (var i = 0; i < NUM; i++) {
-        bits2Num[i] = Bits2Num(LEN);
+        bits2Num[i] = Bits2NumDL(LEN);
         bits2Num[i].in <== in[i];
         sumN.in[i] <== bits2Num[i].out;
     }
-    component num2Bits = Num2Bits(OUT_LEN);
+    component num2Bits = Num2BitsDL(OUT_LEN);
     num2Bits.in <== sumN.out;
 
     out <== num2Bits.out;

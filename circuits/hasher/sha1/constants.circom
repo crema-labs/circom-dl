@@ -12,7 +12,7 @@ template H(x) {
     0xc3d2e1f0
     ];
     
-    component bitify = Num2Bits(32);
+    component bitify = Num2BitsDL(32);
     bitify.in <== c[x];
     
     for (var k = 0; k < 32; k++) {
@@ -24,7 +24,7 @@ template K(t) {
     signal output out[32];
     var k[4] = [0x5a827999, 0x6ed9eba1, 0x8f1bbcdc, 0xca62c1d6];
     
-    component bitify = Num2Bits(32);
+    component bitify = Num2BitsDL(32);
     
     var i;
     

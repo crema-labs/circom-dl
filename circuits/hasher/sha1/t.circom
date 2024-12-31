@@ -43,7 +43,7 @@ template T(t) {
         sumBinary.in[4][k] <== w[31 - k];
     }
     
-    component sum = Bits2Num(nout);
+    component sum = Bits2NumDL(nout);
     for (k = 0; k < nout; k++) {
         sum.in[k] <== sumBinary.out[k];
     }

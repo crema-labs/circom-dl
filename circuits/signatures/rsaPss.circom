@@ -51,7 +51,7 @@ template VerifyRsaPssSig(CHUNK_SIZE, CHUNK_NUMBER, SALT_LEN, EXP, HASH_TYPE){
     
     component num2Bits[CHUNK_NUMBER];
     for (var i = 0; i < CHUNK_NUMBER; i++) {
-        num2Bits[i] = Num2Bits(CHUNK_SIZE);
+        num2Bits[i] = Num2BitsDL(CHUNK_SIZE);
         num2Bits[i].in <== encoded[CHUNK_NUMBER - 1 - i];
         
         for (var j = 0; j < CHUNK_SIZE; j++) {
@@ -61,7 +61,7 @@ template VerifyRsaPssSig(CHUNK_SIZE, CHUNK_NUMBER, SALT_LEN, EXP, HASH_TYPE){
     
     component bits2Num[EM_LEN];
     for (var i = 0; i < EM_LEN; i++) {
-        bits2Num[i] = Bits2Num(8);
+        bits2Num[i] = Bits2NumDL(8);
         for (var j = 0; j < 8; j++) {
             bits2Num[i].in[7 - j] <== eMsgInBits[i * 8 + j];
         }
@@ -267,7 +267,7 @@ template VerifyRsaPssSigNonOptimised(CHUNK_SIZE, CHUNK_NUMBER, SALT_LEN, EXP, HA
     
     component num2Bits[CHUNK_NUMBER];
     for (var i = 0; i < CHUNK_NUMBER; i++) {
-        num2Bits[i] = Num2Bits(CHUNK_SIZE);
+        num2Bits[i] = Num2BitsDL(CHUNK_SIZE);
         num2Bits[i].in <== encoded[CHUNK_NUMBER - 1 - i];
         
         for (var j = 0; j < CHUNK_SIZE; j++) {
@@ -277,7 +277,7 @@ template VerifyRsaPssSigNonOptimised(CHUNK_SIZE, CHUNK_NUMBER, SALT_LEN, EXP, HA
     
     component bits2Num[EM_LEN];
     for (var i = 0; i < EM_LEN; i++) {
-        bits2Num[i] = Bits2Num(8);
+        bits2Num[i] = Bits2NumDL(8);
         for (var j = 0; j < 8; j++) {
             bits2Num[i].in[7 - j] <== eMsgInBits[i * 8 + j];
         }
